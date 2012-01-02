@@ -6,7 +6,7 @@ import (
 
 func TestIdentity(t *testing.T) {
 	m := Identity(11)
-	rows, cols := m.Dim()
+	rows, cols := m.Dims()
 	for i := 0; i < rows; i++ {
 		for k := 0; k < cols; k++ {
 			a := m.Get(i, k)
