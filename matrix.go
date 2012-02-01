@@ -30,7 +30,7 @@ func DenseI(n int) *Dense {
 }
 
 // Returns dimensions of the matrix (rows, cols)
-func (m *Dense) Dims() (int, int) {
+func (m *Dense) Size() (int, int) {
 	return m.rows, m.cols
 }
 

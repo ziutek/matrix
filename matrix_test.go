@@ -6,7 +6,7 @@ import (
 
 func TestIdentity(t *testing.T) {
 	m := DenseI(11)
-	rows, cols := m.Dims()
+	rows, cols := m.Size()
 	for i := 0; i < rows; i++ {
 		for k := 0; k < cols; k++ {
 			a := m.Get(i, k)
