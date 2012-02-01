@@ -2,7 +2,7 @@ include $(GOROOT)/src/Make.inc
 
 GC = $Og -N
 #GC = $Og -B
-TARG=matrix
+TARG=github.com/ziutek/matrix
 
 #OFILES_amd64=\
 
