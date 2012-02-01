@@ -13,7 +13,10 @@ ALLGOFILES=\
 	   matrix.go\
 	   utils.go\
 	   add.go\
-	   add_to.go\
+	   addto.go\
+	   sub.go\
+	   mul.go\
+	   mulby.go\
 
 NOGOFILES=\
 	$(subst _$(GOARCH).$O,.go,$(OFILES_$(GOARCH)))
