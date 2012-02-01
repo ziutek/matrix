@@ -13,6 +13,7 @@ ALLGOFILES=\
 	   matrix.go\
 	   utils.go\
 	   add.go\
+	   add_to.go\
 
 NOGOFILES=\
 	$(subst _$(GOARCH).$O,.go,$(OFILES_$(GOARCH)))

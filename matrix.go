@@ -1,14 +1,14 @@
 package matrix
 
 type Matrix struct {
-	a                  []float64 // [row, row, ..., row]
+	v                  []float64 // [row, row, ..., row]
 	rows, cols, stride int
 }
 
 // Retuns zero matrix
 func Zero(rows, cols int) *Matrix {
 	return &Matrix{
-		a:      make([]float64, cols*rows),
+		v:      make([]float64, cols*rows),
 		rows:   rows,
 		cols:   cols,
 		stride: 1,
@@ -18,8 +18,8 @@ func Zero(rows, cols int) *Matrix {
 func Identity(n int) *Matrix {
 	m := Zero(n, n)
 	inc := n + 1
-	for i := 0; i < len(m.a); i += inc {
-		m.a[i] = 1
+	for i := 0; i < len(m.v); i += inc {
+		m.v[i] = 1
 	}
 	return m
 }
@@ -45,31 +45,31 @@ func (m *Matrix) Cols() int {
 
 func (m *Matrix) Get(i, k int) float64 {
 	m.checkIndexes(i, k)
-	return m.a[m.stride*(i*m.cols+k)]
+	return m.v[m.stride*(i*m.cols+k)]
 }
 
 func (m *Matrix) Set(i, k int, a float64) {
 	m.checkIndexes(i, k)
-	m.a[m.stride*(i*m.cols+k)] = a
+	m.v[m.stride*(i*m.cols+k)] = a
 }
 
 func (m *Matrix) SetAll(a float64) {
 	i := m.rows * m.cols * m.stride
 	for i > 0 {
 		i--
-		m.a[i] = a
+		m.v[i] = a
 	}
 }
 
-// Returns a slice of a matrix that contains rows from i1 to i2 - 1
-func (m *Matrix) Hslice(i1, i2 int) *Matrix {
-	if i1 > i2 || i1 < 0 || i2 > m.rows {
+// Returns a slice of a matrix that contains rows from start to stop - 1
+func (m *Matrix) Hslice(start, stop int) *Matrix {
+	if start > stop || start < 0 || stop > m.rows {
 		panic("bad indexes for horizontal slice")
 	}
 	inc := m.cols * m.stride
 	return &Matrix{
-		a:      m.a[i1*inc : i2*inc],
-		rows:   i2 - i1,
+		v:      m.v[start*inc : stop*inc],
+		rows:   stop - start,
 		cols:   m.cols,
 		stride: m.stride,
 	}
