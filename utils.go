@@ -2,7 +2,7 @@ package matrix
 
 import "fmt"
 
-func (m *Matrix) checkIndexes(i, k int) {
+func (m *Dense) checkIndexes(i, k int) {
 	if i < 0 || i >= m.rows {
 		panic(fmt.Sprintf("row index (%d) out of range [0, %d]", i, m.rows))
 	}
@@ -11,7 +11,7 @@ func (m *Matrix) checkIndexes(i, k int) {
 	}
 }
 
-func checkEqualDims(m1, m2 *Matrix) {
+func checkEqualDims(m1, m2 *Dense) {
 	if m1.Rows() != m2.Rows() || m1.Cols() != m2.Cols() {
 		panic("dimensions of matrices are not equal")
 	}

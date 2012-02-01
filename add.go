@@ -1,7 +1,7 @@
 package matrix
 
 // m = (a + b) * s
-func (m *Matrix) Add(a, b *Matrix, s float64) {
+func (m *Dense) Add(a, b *Dense, s float64) {
 	checkEqualDims(m, a)
 	checkEqualDims(m, b)
 
