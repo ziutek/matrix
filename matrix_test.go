@@ -2,6 +2,7 @@ package matrix
 
 import (
 	"testing"
+	"fmt"
 )
 
 func TestIdentity(t *testing.T) {
@@ -21,4 +22,20 @@ func TestIdentity(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestSlice(t *testing.T) {
+	m := DenseZero(5, 6)
+	m.Rand(-1, 1)
+	s := m.Hslice(1, 4)
+	fmt.Printf("m = %s\n", m)
+	fmt.Printf("s = %s\n", s)
+	s = m.Vslice(1, 4)
+	fmt.Printf("m = %s\n", m)
+	fmt.Printf("s = %s\n", s)
+}
+
+
+func TestAddTo(t *testing.T) {
+	
 }
