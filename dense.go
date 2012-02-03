@@ -54,13 +54,19 @@ func (m *Dense) Set(i, k int, a float64) {
 	m.v[i*m.stride+k] = a
 }
 
+// Sets all elements to a
 func (m *Dense) SetAll(a float64) {
-	o := m.rows * m.stride
-	for o != 0 {
-		o -= m.stride
-		row := m.v[o : o+m.cols]
-		for k := 0; k < m.cols; k++ {
+	for i := 0; i < m.rows; i++ {
+		row := m.v[i*m.stride:]
+		k := m.cols
+		for k >= 2 {
+			k--
 			row[k] = a
+			k--
+			row[k] = a
+		}
+		if k != 0 {
+			row[0] = a
 		}
 	}
 }
@@ -68,23 +74,20 @@ func (m *Dense) SetAll(a float64) {
 // Sets all elements to: min + rand.Float64() * (max - min)
 func (m *Dense) Rand(min, max float64) {
 	s := max - min
-	o := m.rows * m.stride
-	for o != 0 {
-		o -= m.stride
-		row := m.v[o : o+m.cols]
+	for i := 0; i < m.rows; i++ {
+		row := m.v[i*m.stride:]
 		for k := 0; k < m.cols; k++ {
 			row[k] = min + s*rand.Float64()
 		}
 	}
 }
 
+// Sets all elements to: mean + stdDev*rand.NormFloat64()
 func (m *Dense) RandNorm(mean, stdDev float64) {
-	o := m.rows * m.stride
-	for o != 0 {
-		o -= m.stride
-		row := m.v[o : o+m.cols]
+	for i := 0; i < m.rows; i++ {
+		row := m.v[i*m.stride:]
 		for k := 0; k < m.cols; k++ {
-			row[k] = mean + stdDev*rand.Float64()
+			row[k] = mean + stdDev*rand.NormFloat64()
 		}
 	}
 }
@@ -121,11 +124,32 @@ func (m *Dense) String() string {
 	s := "["
 	for i := 0; i < rows; i++ {
 		if i != 0 {
-			s += "\n"
+			s += "\n "
 		}
+		o := ""
 		for k := 0; k < cols; k++ {
-			s += fmt.Sprintf(" %-g ", m.Get(i, k))
+			s += fmt.Sprintf("%s%-g", o, m.Get(i, k))
+			if k == 0 {
+				o = " "
+			}
 		}
 	}
 	return s + "]"
+}
+
+// Utils
+
+func (m *Dense) checkIndexes(i, k int) {
+	if i < 0 || i >= m.rows {
+		panic(fmt.Sprintf("row index (%d) out of range [0, %d]", i, m.rows))
+	}
+	if k < 0 || k >= m.cols {
+		panic(fmt.Sprintf("column index (%d) out of range [0, %d]", k, m.cols))
+	}
+}
+
+func (m *Dense) checkEqualDims(a *Dense) {
+	if m.Rows() != a.Rows() || m.Cols() != a.Cols() {
+		panic("dimensions of matrices are not equal")
+	}
 }

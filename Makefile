@@ -10,13 +10,8 @@ OFILES=\
 	$(OFILES_$(GOARCH))
 
 ALLGOFILES=\
-	   matrix.go\
-	   utils.go\
-	   add.go\
-	   addto.go\
-	   sub.go\
-	   mul.go\
-	   mulby.go\
+	   dense.go\
+	   dmulby.go\
 
 NOGOFILES=\
 	$(subst _$(GOARCH).$O,.go,$(OFILES_$(GOARCH)))
