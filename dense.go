@@ -13,6 +13,9 @@ type Dense struct {
 
 // Creates new matrix that refers to v
 func NewDense(rows, cols, stride int, v []float64) *Dense {
+	if rows * stride > len(v) {
+		panic("v is to small")
+	}
 	return &Dense{v: v, rows: rows, cols: cols, stride: stride}
 }
 
