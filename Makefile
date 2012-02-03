@@ -11,7 +11,13 @@ OFILES=\
 
 ALLGOFILES=\
 	   dense.go\
+	   dcopy.go\
+	   daddto.go\
+	   dadd.go\
+	   dscaleby.go\
+	   dscale.go\
 	   dmulby.go\
+	   dmul.go\
 
 NOGOFILES=\
 	$(subst _$(GOARCH).$O,.go,$(OFILES_$(GOARCH)))

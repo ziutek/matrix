@@ -11,7 +11,12 @@ type Dense struct {
 	stride     int // distance between vertically adjacent values
 }
 
-// Retuns zero matrix
+// Creates new matrix that refers to v
+func NewDense(rows, cols, stride int, v []float64) *Dense {
+	return &Dense{v: v, rows: rows, cols: cols, stride: stride}
+}
+
+// Retuns new zero matrix
 func DenseZero(rows, cols int) *Dense {
 	return &Dense{
 		v:      make([]float64, cols*rows),
@@ -42,6 +47,14 @@ func (m *Dense) Rows() int {
 
 func (m *Dense) Cols() int {
 	return m.cols
+}
+
+func (m *Dense) Stride() int {
+	return m.stride
+}
+
+func (m *Dense) Values() []float64 {
+	return m.v
 }
 
 func (m *Dense) Get(i, k int) float64 {
@@ -117,6 +130,22 @@ func (m *Dense) Vslice(start, stop int) *Dense {
 		stride: m.stride,
 	}
 
+}
+
+func (m *Dense) Equal(a *Dense) bool {
+	if m.rows != a.rows || m.cols != a.cols {
+		return false
+	}
+	for i := 0; i < m.rows; i++ {
+		mr := m.v[i*m.stride:]
+		ar := a.v[i*a.stride:]
+		for k := 0; k < m.cols; k++ {
+			if mr[k] != ar[k] {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func (m *Dense) String() string {
