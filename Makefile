@@ -18,6 +18,7 @@ ALLGOFILES=\
 	   dscale.go\
 	   dmulby.go\
 	   dmul.go\
+	   dsub.go\
 
 NOGOFILES=\
 	$(subst _$(GOARCH).$O,.go,$(OFILES_$(GOARCH)))

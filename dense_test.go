@@ -140,8 +140,6 @@ func TestDenseMul(t *testing.T) {
 	c.MulBy(b)
 	d.Mul(a, b)
 	d.checkEqual(t, c)
-
-	fmt.Println(d)
 }
 
 func TestDenseAddTo(t *testing.T) {
@@ -271,6 +269,43 @@ func TestDenseAdd(t *testing.T) {
 	c.AddTo(y, 2)
 	d.Add(x, y, 2)
 	d.checkEqual(t, c)
+}
+
+func TestDenseSub(t *testing.T) {
+	a := DenseZero(7, 6)
+	a.Rand(-1, 1)
+	b := DenseZero(7, 6)
+	b.Rand(-1, 1)
+	c := DenseZero(7, 6)
+	d := DenseZero(7, 6)
+
+	c.Copy(a)
+	c.AddTo(b, -1)
+	d.Sub(a, b, 1)
+	d.checkEqual(t, c)
+
+	c.Scale(a, 2)
+	c.AddTo(b, -2)
+	d.Sub(a, b, 2)
+	d.checkEqual(t, c)
+
+	start, stop := 1, 5
+	x := c.Vslice(start, stop)
+	y := b.Vslice(start, stop)
+	c = DenseZero(7, 4)
+	d = DenseZero(7, 4)
+
+	c.Copy(x)
+	c.AddTo(y, -1)
+	d.Sub(x, y, 1)
+	d.checkEqual(t, c)
+
+	c.Scale(x, 2)
+	c.AddTo(y, -2)
+	d.Sub(x, y, 2)
+	d.checkEqual(t, c)
+
+	fmt.Println(d)
 }
 
 // Utils
