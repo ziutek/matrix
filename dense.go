@@ -13,10 +13,11 @@ type Dense struct {
 
 // Creates new matrix that refers to v
 func NewDense(rows, cols, stride int, v []float64) *Dense {
-	if rows*stride > len(v) {
+	n := rows*stride
+	if n > len(v) {
 		panic("v is to small")
 	}
-	return &Dense{v: v, rows: rows, cols: cols, stride: stride}
+	return &Dense{v: v[:n], rows: rows, cols: cols, stride: stride}
 }
 
 // Retuns new zero matrix
