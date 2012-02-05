@@ -13,7 +13,7 @@ type Dense struct {
 
 // Creates new matrix that refers to v
 func NewDense(rows, cols, stride int, v []float64) *Dense {
-	if rows * stride > len(v) {
+	if rows*stride > len(v) {
 		panic("v is to small")
 	}
 	return &Dense{v: v, rows: rows, cols: cols, stride: stride}
@@ -44,27 +44,33 @@ func (m *Dense) Size() (int, int) {
 	return m.rows, m.cols
 }
 
+// Returns number of rows
 func (m *Dense) Rows() int {
 	return m.rows
 }
 
+// Returns number of columns
 func (m *Dense) Cols() int {
 	return m.cols
 }
 
+// Returns stride
 func (m *Dense) Stride() int {
 	return m.stride
 }
 
+// Returns internal buffer of values
 func (m *Dense) Values() []float64 {
 	return m.v
 }
 
+// Returns value from row i and column k
 func (m *Dense) Get(i, k int) float64 {
 	m.checkIndexes(i, k)
 	return m.v[i*m.stride+k]
 }
 
+// Sets value in row i and column k
 func (m *Dense) Set(i, k int, a float64) {
 	m.checkIndexes(i, k)
 	m.v[i*m.stride+k] = a
@@ -135,6 +141,23 @@ func (m *Dense) Vslice(start, stop int) *Dense {
 
 }
 
+// Returns matrix as horizontal vector. Panics if cols != stride.
+func (m *Dense) Hvec() *Dense {
+	if m.cols != m.stride {
+		panic("cols != stride")
+	}
+	return &Dense{v: m.v, rows: 1, cols: len(m.v), stride: len(m.v)}
+}
+
+// Returns matrix as vertical vector. Panics if cols != stride.
+func (m *Dense) Vvec() *Dense {
+	if m.cols != m.stride {
+		panic("cols != stride")
+	}
+	return &Dense{v: m.v, rows: len(m.v), cols: 1, stride: 1}
+}
+
+// Returns true if matrices are equal
 func (m *Dense) Equal(a *Dense) bool {
 	if m.rows != a.rows || m.cols != a.cols {
 		return false
