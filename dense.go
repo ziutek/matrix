@@ -133,7 +133,7 @@ func (m *Dense) Hslice(start, stop int) *Dense {
 // Returns a slice of a matrix that contains cols from start to stop - 1
 func (m *Dense) Vslice(start, stop int) *Dense {
 	if start > stop || start < 0 || stop > m.cols {
-		log.Panicf("bad indexes for horizontal slice: (%d,%d)", start, stop)
+		log.Panicf("bad indexes for vertical slice: (%d,%d)", start, stop)
 	}
 	return &Dense{
 		v:      m.v[start : (m.rows-1)*m.stride+stop],
