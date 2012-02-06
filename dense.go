@@ -12,7 +12,7 @@ type Dense struct {
 }
 
 // Creates new matrix that refers to v
-func NewDense(rows, cols, stride int, v []float64) *Dense {
+func NewDense(rows, cols, stride int, v ...float64) *Dense {
 	n := rows*stride
 	if n > len(v) {
 		panic("v is to small")
@@ -61,7 +61,7 @@ func (m *Dense) Stride() int {
 }
 
 // Returns internal buffer of values
-func (m *Dense) Values() []float64 {
+func (m *Dense) Elems() []float64 {
 	return m.v
 }
 
