@@ -311,7 +311,7 @@ func TestDenseSub(t *testing.T) {
 // Utils
 
 func (m *Dense) wrongValue(t *testing.T, i, k int) {
-	t.Fatalf("wrong value %g at (%d,%d)\n%s", m.Get(i, k), i, k, m)
+	t.Fatalf("element (%d,%d) has wrong value %g\n%s", i, k, m.Get(i, k), m)
 }
 
 func (m *Dense) checkEqual(t *testing.T, a *Dense) {
