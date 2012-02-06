@@ -10,7 +10,7 @@ import (
 type Dense struct {
 	v          []float64 // [row, row, ..., row]
 	rows, cols int
-	stride     int // distance between vertically adjacent values
+	stride     int // distance between vertically adjacent elements
 }
 
 // Creates new matrix that refers to v
@@ -62,18 +62,18 @@ func (m *Dense) Stride() int {
 	return m.stride
 }
 
-// Returns internal buffer of values
+// Returns internal buffer of elements
 func (m *Dense) Elems() []float64 {
 	return m.v
 }
 
-// Returns value from row i and column k
+// Returns element from row i and column k
 func (m *Dense) Get(i, k int) float64 {
 	m.checkIndexes(i, k)
 	return m.v[i*m.stride+k]
 }
 
-// Sets value in row i and column k
+// Sets element in row i and column k
 func (m *Dense) Set(i, k int, a float64) {
 	m.checkIndexes(i, k)
 	m.v[i*m.stride+k] = a
