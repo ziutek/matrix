@@ -2,6 +2,7 @@ package matrix
 
 import (
 	"fmt"
+	"encoding/json"
 	"math/rand"
 )
 
@@ -191,6 +192,11 @@ func (m *Dense) String() string {
 		}
 	}
 	return s + "]"
+}
+
+func (m *Dense) MarshalJSON() ([]byte, error) {
+	s := struct{Cols, Stride int; Elems []float64}{m.cols, m.stride, m.v}
+	return json.Marshal(s)
 }
 
 // Utils
