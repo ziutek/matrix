@@ -1,8 +1,9 @@
 package matrix
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"log"
 	"math/rand"
 )
 
@@ -14,9 +15,9 @@ type Dense struct {
 
 // Creates new matrix that refers to v
 func NewDense(rows, cols, stride int, v ...float64) *Dense {
-	n := rows*stride
+	n := rows * stride
 	if n > len(v) {
-		panic("v is to small")
+		log.Panic("v is to small")
 	}
 	return &Dense{v: v[:n], rows: rows, cols: cols, stride: stride}
 }
@@ -119,7 +120,7 @@ func (m *Dense) RandNorm(mean, stdDev float64) {
 // Returns a slice of a matrix that contains rows from start to stop - 1
 func (m *Dense) Hslice(start, stop int) *Dense {
 	if start > stop || start < 0 || stop > m.rows {
-		panic("bad indexes for horizontal slice")
+		log.Panicf("bad indexes for horizontal slice: (%d,%d)", start, stop)
 	}
 	return &Dense{
 		v:      m.v[start*m.stride : stop*m.stride],
@@ -132,7 +133,7 @@ func (m *Dense) Hslice(start, stop int) *Dense {
 // Returns a slice of a matrix that contains cols from start to stop - 1
 func (m *Dense) Vslice(start, stop int) *Dense {
 	if start > stop || start < 0 || stop > m.cols {
-		panic("bad indexes for vertical slice")
+		log.Panicf("bad indexes for horizontal slice: (%d,%d)", start, stop)
 	}
 	return &Dense{
 		v:      m.v[start : (m.rows-1)*m.stride+stop],
@@ -146,7 +147,7 @@ func (m *Dense) Vslice(start, stop int) *Dense {
 // Returns matrix as horizontal vector. Panics if cols != stride.
 func (m *Dense) Hvec() *Dense {
 	if m.cols != m.stride {
-		panic("cols != stride")
+		log.Panicf("cols != stride: %d != %d", m.cols, m.stride)
 	}
 	return &Dense{v: m.v, rows: 1, cols: len(m.v), stride: len(m.v)}
 }
@@ -154,7 +155,7 @@ func (m *Dense) Hvec() *Dense {
 // Returns matrix as vertical vector. Panics if cols != stride.
 func (m *Dense) Vvec() *Dense {
 	if m.cols != m.stride {
-		panic("cols != stride")
+		log.Panicf("cols != stride: %d != %d", m.cols, m.stride)
 	}
 	return &Dense{v: m.v, rows: len(m.v), cols: 1, stride: 1}
 }
@@ -195,7 +196,10 @@ func (m *Dense) String() string {
 }
 
 func (m *Dense) MarshalJSON() ([]byte, error) {
-	s := struct{Cols, Stride int; Elems []float64}{m.cols, m.stride, m.v}
+	s := struct {
+		Cols, Stride int
+		Elems        []float64
+	}{m.cols, m.stride, m.v}
 	return json.Marshal(s)
 }
 
@@ -203,15 +207,18 @@ func (m *Dense) MarshalJSON() ([]byte, error) {
 
 func (m *Dense) checkIndexes(i, k int) {
 	if i < 0 || i >= m.rows {
-		panic(fmt.Sprintf("row index (%d) out of range [0, %d]", i, m.rows))
+		log.Panicf("row index (%d) out of range [0, %d]", i, m.rows)
 	}
 	if k < 0 || k >= m.cols {
-		panic(fmt.Sprintf("column index (%d) out of range [0, %d]", k, m.cols))
+		log.Panicf("column index (%d) out of range [0, %d]", k, m.cols)
 	}
 }
 
 func (m *Dense) checkEqualDims(a *Dense) {
 	if m.Rows() != a.Rows() || m.Cols() != a.Cols() {
-		panic("dimensions of matrices are not equal")
+		log.Panicf(
+			"dimensions not equal: (%d,%d) != (%d,%d)",
+			m.Rows(), m.Cols(), a.Rows(), a.Cols(),
+		)
 	}
 }
