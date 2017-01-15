@@ -1,4 +1,4 @@
-package matrix
+package matrix32
 
 // Copy performs: d = a
 func (d Dense) Copy(a Dense) {

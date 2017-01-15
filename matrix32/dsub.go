@@ -1,7 +1,7 @@
-package matrix
+package matrix32
 
 // Sub performs: d = (a - b) * s
-func (d Dense) Sub(a, b Dense, s float64) {
+func (d Dense) Sub(a, b Dense, s float32) {
 	d.checkDim(a)
 	d.checkDim(b)
 	switch s {

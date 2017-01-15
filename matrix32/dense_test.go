@@ -1,4 +1,4 @@
-package matrix
+package matrix32
 
 import (
 	"math/rand"
@@ -353,7 +353,7 @@ func BenchmarkDenseMul(t *testing.B) {
 
 // Utils
 
-func (m Dense) setRandom(min, max float64) {
+func (m Dense) setRandom(min, max float32) {
 	delta := max - min
 	for i := 0; i < m.NumRow(); i++ {
 		for k := 0; k < m.NumCol(); k++ {

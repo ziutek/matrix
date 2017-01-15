@@ -1,15 +1,15 @@
-package matrix
+package matrix32
 
 // Mul performs: d = a × b
 func (d Dense) Mul(a, b Dense) {
 	if d.numrow != a.numrow || d.numcol != b.numcol || a.numcol != b.numrow {
-		panic("matrix: Mul: bad dimensions")
+		panic("matrix32: Mul: bad dimensions")
 	}
 	for i := 0; i < d.numrow; i++ {
 		dr := d.v[i*d.stride:]
 		ar := a.v[i*a.stride:]
 		for k := 0; k < d.numcol; k++ {
-			var p float64
+			var p float32
 			j, l := 0, k
 			n := a.numcol - 1
 			for j < n {

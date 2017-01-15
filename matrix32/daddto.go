@@ -1,7 +1,7 @@
-package matrix
+package matrix32
 
 // AddTo performs: d += a * s
-func (d Dense) AddTo(a Dense, s float64) {
+func (d Dense) AddTo(a Dense, s float32) {
 	d.checkDim(a)
 	switch s {
 	case 1:

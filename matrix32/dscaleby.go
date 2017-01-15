@@ -1,7 +1,7 @@
-package matrix
+package matrix32
 
 // ScaleBy performs: a *= s
-func (d Dense) ScaleBy(s float64) {
+func (d Dense) ScaleBy(s float32) {
 	for i := 0; i < d.numrow; i++ {
 		dr := d.v[i*d.stride:]
 		k, n := 0, d.numcol-1

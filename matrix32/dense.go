@@ -1,35 +1,35 @@
-package matrix
+package matrix32
 
 import (
 	"fmt"
 )
 
 type Dense struct {
-	v      []float64 // [row, row, ..., row]
+	v      []float32 // [row, row, ..., row]
 	numrow int
 	numcol int
 	stride int // The distance between vertically adjacent elements.
 }
 
 // AsDense makes new dense matrix that refers to v
-func AsDense(numrow, numcol int, v []float64) Dense {
+func AsDense(numrow, numcol int, v []float32) Dense {
 	n := numrow * numcol
 	if n > len(v) {
-		panic("matrix: AsDense: numrow*numcol > len(v)")
+		panic("matrix32: AsDense: numrow*numcol > len(v)")
 	}
 	return Dense{v: v[:n], numrow: numrow, numcol: numcol, stride: numcol}
 }
 
 // MakeDense allocates new dense matrix and initializes its first elements to
 // values specified by iv.
-func MakeDense(numrow, numcol int, iv ...float64) Dense {
-	v := make([]float64, numrow*numcol)
+func MakeDense(numrow, numcol int, iv ...float32) Dense {
+	v := make([]float32, numrow*numcol)
 	copy(v, iv)
 	return AsDense(numrow, numcol, v)
 }
 
 // SetAll sets all elements of d to a.
-func (d Dense) SetAll(a float64) {
+func (d Dense) SetAll(a float32) {
 	for i := 0; i < d.numrow; i++ {
 		row := d.v[i*d.stride:]
 		k := d.numcol - 1
@@ -47,7 +47,7 @@ func (d Dense) SetAll(a float64) {
 // SetI sets elements of d to create identity matrix (panics if d is not square).
 func (d Dense) SetIdentity() {
 	if d.numrow != d.numcol {
-		panic("matrix: SetI on non square matrix")
+		panic("matrix32: SetI on non square matrix")
 	}
 	d.SetAll(0)
 	for i := 0; i < len(d.v); i += d.stride + 1 {
@@ -77,24 +77,24 @@ func (d Dense) Stride() int {
 
 // Elems returns internal buffer of elements. Be careful when use returned slice.
 // For example you can not assume that its length corresponds to dimensions of d.
-func (d Dense) Elems() []float64 {
+func (d Dense) Elems() []float32 {
 	return d.v
 }
 
 // Get returns element from row i, column k.
-func (d Dense) Get(i, k int) float64 {
+func (d Dense) Get(i, k int) float32 {
 	return d.v[i*d.stride+k]
 }
 
 // Set sets element in row i and column k.
-func (d Dense) Set(i, k int, a float64) {
+func (d Dense) Set(i, k int, a float32) {
 	d.v[i*d.stride+k] = a
 }
 
 // Rows returns a slice of a matrix that contains rows from start to stop-1.
 func (d Dense) Rows(start, stop int) Dense {
 	if start > stop || start < 0 || stop > d.numrow {
-		panic("matrix: bad indexes for horizontal slice")
+		panic("matrix32: bad indexes for horizontal slice")
 	}
 	return Dense{
 		v:      d.v[start*d.stride : stop*d.stride],
@@ -107,7 +107,7 @@ func (d Dense) Rows(start, stop int) Dense {
 // Cols returns a slice of a matrix that contains columns from start to stop-1.
 func (d Dense) Cols(start, stop int) Dense {
 	if start > stop || start < 0 || stop > d.numcol {
-		panic("matrix: bad indexes for vertical slice")
+		panic("matrix32: bad indexes for vertical slice")
 	}
 	return Dense{
 		v:      d.v[start : (d.numrow-1)*d.stride+stop],
@@ -121,7 +121,7 @@ func (d Dense) Cols(start, stop int) Dense {
 // AsRow returns horizontal vector that refers to d. Panics if cols != stride.
 func (d Dense) AsRow() Dense {
 	if d.numcol != d.stride {
-		panic("matrix: AsRow: numcol != stride")
+		panic("matrix32: AsRow: numcol != stride")
 	}
 	return Dense{v: d.v, numrow: 1, numcol: len(d.v), stride: len(d.v)}
 }
@@ -129,7 +129,7 @@ func (d Dense) AsRow() Dense {
 // AsCol returns vertical vector that refers to d. Panics if numcol != stride.
 func (d Dense) AsCol() Dense {
 	if d.numcol != d.stride {
-		panic("matrix: AsCol: numcol != stride")
+		panic("matrix32: AsCol: numcol != stride")
 	}
 	return Dense{v: d.v, numrow: len(d.v), numcol: 1, stride: 1}
 }
@@ -173,6 +173,6 @@ func (d Dense) Format(f fmt.State, _ rune) {
 
 func (d Dense) checkDim(a Dense) {
 	if d.numrow != a.numrow || d.numcol != a.numcol {
-		panic("matrix: dimensions not equal")
+		panic("matrix32: dimensions not equal")
 	}
 }

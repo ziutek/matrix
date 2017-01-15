@@ -1,3 +1,3 @@
-Matrix library for Go
+Matrix library for Go (emgo compatible).
 
-See [documentation](http://gopkgdoc.appspot.com/pkg/github.com/ziutek/matrix)
+See [documentation](https://godoc.org/github.com/github.com/ziutek/matrix)

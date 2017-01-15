@@ -1,7 +1,7 @@
-package matrix
+package matrix32
 
 // Scale performs: d = a * s
-func (d Dense) Scale(a Dense, s float64) {
+func (d Dense) Scale(a Dense, s float32) {
 	d.checkDim(a)
 	for i := 0; i < d.numrow; i++ {
 		dr := d.v[i*d.stride:]
