@@ -357,7 +357,7 @@ func (m Dense) setRandom(min, max float64) {
 	delta := max - min
 	for i := 0; i < m.NumRow(); i++ {
 		for k := 0; k < m.NumCol(); k++ {
-			m.Set(i, k, min+delta*rand.Float32())
+			m.Set(i, k, min+delta*rand.Float64())
 		}
 	}
 }

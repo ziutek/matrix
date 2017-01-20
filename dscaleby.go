@@ -1,6 +1,6 @@
 package matrix
 
-// ScaleBy performs: a *= s
+// ScaleBy performs: d *= s
 func (d Dense) ScaleBy(s float64) {
 	for i := 0; i < d.numrow; i++ {
 		dr := d.v[i*d.stride:]

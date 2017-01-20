@@ -6,6 +6,6 @@ rm -rf matrix32
 mkdir matrix32
 cp *.go matrix32
 cd matrix32
-sed -i 's/float64/float32/g' *.go
+sed -i 's/loat64/loat32/g' *.go
 sed -i 's/ackage matrix/ackage matrix32/g' *.go
 sed -i 's/matrix:/matrix32:/g' *.go

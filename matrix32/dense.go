@@ -28,6 +28,11 @@ func MakeDense(numrow, numcol int, iv ...float32) Dense {
 	return AsDense(numrow, numcol, v)
 }
 
+// IsValid reports whether d represents valid matrix value.
+func (d Dense) IsValid() bool {
+	return len(d.v) > 0 && d.numrow > 0 && d.numcol > 0 && d.stride > 0
+}
+
 // SetAll sets all elements of d to a.
 func (d Dense) SetAll(a float32) {
 	for i := 0; i < d.numrow; i++ {
@@ -151,22 +156,39 @@ func (d Dense) Equal(a Dense) bool {
 	return true
 }
 
-func (d Dense) Format(f fmt.State, _ rune) {
-	numrow, numcol := d.Size()
-	f.Write([]byte{'['})
-	var o string
-	for i := 0; i < numrow; i++ {
-		if i != 0 {
-			f.Write([]byte{' ', ';'})
+func (d Dense) Format(f fmt.State, c rune) {
+	format := "%g"
+	switch c {
+	case 'f':
+		format = "%f"
+	case 'e':
+		format = "%e"
+	case 'G':
+		format = "%G"
+	case 'E':
+		format = "%E"
+	case 'F':
+		format = "%F"
+	}
+	lastrow, lastcol := d.Size()
+	lastrow--
+	lastcol--
+	f.Write([]byte{'{'})
+	for i := 0; i <= lastrow; i++ {
+		if i > 0 {
+			f.Write([]byte{'\n'})
 		}
-		for k := 0; k < numcol; k++ {
-			fmt.Fprintf(f, "%s%-g", o, d.Get(i, k))
-			if k == 0 {
-				o = " "
+		for k := 0; k <= lastcol; k++ {
+			fmt.Fprintf(f, format, d.Get(i, k))
+			if k < lastcol {
+				f.Write([]byte{','})
 			}
 		}
+		if i < lastrow {
+			f.Write([]byte{','})
+		}
 	}
-	f.Write([]byte{']'})
+	f.Write([]byte{'}'})
 }
 
 // Utils
